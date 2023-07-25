@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tiny Calculator</title>
+  <!-- Meta information -->
+  <meta name="author" content="Levi de Pruyssenaere de la Woestijne">
+  <meta name="version" content="Version 1.0">
+  <meta name="date" content="25 July, 2023">
+  <link rel="icon" href="TinyCalculatorLogo.png" type="image/Png">
+
+  <style>
+    body {
+      margin: 0; /* Remove default body margin */
+      background-color: #f4eeee; /* Set body background to transparent */
+    }
+
+    .calculator-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: transparent; /* Set container background to transparent */
+    }
+
+    /* Light mode styles */
+    .light-mode .calculator {
+      background-color: #ffffff; /* White background in light mode */
+      color: #000000; /* Black text in light mode */
+    }
+
+    /* Dark mode styles */
+    .dark-mode .calculator {
+      background-color: #201f1f; /* Dark mode background color for calculator */
+      color: #ffffff; /* White text in dark mode */
+    }
+
+    .calculator {
+      width: 150px;
+      border: 1px solid #cccccc;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .calculator input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      text-align: right;
+      box-sizing: border-box;
+      background-color: #ffffff; /* White background for input */
+    }
+
+    /* Dark mode input style */
+    .dark-mode .calculator input {
+      background-color: #201f1f; /* Dark mode background color for input */
+      color: #ffffff; /* White text for input in dark mode */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Shadow for input in dark mode */
+    }
+
+    .calculator button {
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+      border: none;
+      border-radius: 50%;
+      margin: 2px;
+      cursor: pointer;
+      background-color: #ffffff; /* White background for buttons */
+    }
+
+    /* Dark mode button style */
+    .dark-mode .calculator button {
+      background-color: #201f1f; /* Dark gray background for buttons in dark mode */
+      color: #ffffff; /* White text for buttons in dark mode */
+      box-shadow: none; /* Remove box shadow for buttons in dark mode */
+    }
+
+    .calculator button:hover {
+      background-color: #f0f0f0; /* Light gray background on hover */
+    }
+
+    /* Dark mode button hover style */
+    .dark-mode .calculator button:hover {
+      background-color: #333333; /* Dark gray background on hover in dark mode */
+    }
+
+    /* Center the button rows */
+    .calculator > div {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Add some margin to the bottom row for better spacing */
+    .calculator > div:last-child {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body class="light-mode">
+  <!-- Calculator container -->
+  <div class="calculator-container">
+    <div class="calculator" id="calculator">
+      <input type="text" id="display" readonly>
+      <!-- Button rows -->
+      <div>
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="toggleSign()">+/-</button> <!-- (+/-) function button -->
+        <button onclick="calculatePercentage()">%</button>
+        <button onclick="appendToDisplay('/')">/</button>
+      </div>
+      <div>
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="appendToDisplay('*')">*</button>
+      </div>
+      <div>
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="appendToDisplay('-')">-</button>
+      </div>
+      <div>
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="appendToDisplay('+')">+</button>
+      </div>
+      <div>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+        <button onclick="toggleDarkMode()">ⓘ</button> <!-- Dark/light mode button with "ⓘ" text -->
+        <button onclick="calculate()">=</button>
+      </div>
+    </div>
+  </div>
+  <!-- JavaScript code for calculator functionality and dark mode toggle -->
+  <script>
+    // Function to set the dark mode preference in local storage
+    function setDarkModePreference(darkModeEnabled) {
+      localStorage.setItem('darkMode', darkModeEnabled ? '1' : '0');
+    }
+
+    // Function to get the dark mode preference from local storage
+    function getDarkModePreference() {
+      return localStorage.getItem('darkMode') === '1';
+    }
+
+    // Function to update the dark mode class on the body and calculator elements
+    function updateDarkModeClass() {
+      const darkModeEnabled = getDarkModePreference();
+      const calculator = document.getElementById('calculator');
+      const display = document.getElementById('display');
+
+      if (darkModeEnabled) {
+        calculator.classList.add('dark-mode');
+        document.body.classList.add('dark-mode');
+        display.classList.add('dark-mode');
+      } else {
+        calculator.classList.remove('dark-mode');
+        document.body.classList.remove('dark-mode');
+        display.classList.remove('dark-mode');
+      }
+    }
+
+    // Call the function on page load to set the initial mode
+    updateDarkModeClass();
+
+    function appendToDisplay(value) {
+      document.getElementById('display').value += value;
+    }
+
+    function clearDisplay() {
+      document.getElementById('display').value = '';
+    }
+
+    function calculate() {
+      const display = document.getElementById('display');
+      try {
+        display.value = eval(display.value);
+      } catch (e) {
+        display.value = 'Error';
+      }
+    }
+
+    function calculatePercentage() {
+      const display = document.getElementById('display');
+      display.value = eval(display.value) / 100;
+    }
+
+    function toggleSign() {
+      const display = document.getElementById('display');
+      display.value = -1 * eval(display.value);
+    }
+
+    function toggleDarkMode() {
+      const darkModeEnabled = getDarkModePreference();
+      setDarkModePreference(!darkModeEnabled);
+      updateDarkModeClass();
+    }
+  </script>
+</body>
+</html>
