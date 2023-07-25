@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting to Tiny Calculator</title>
+    <meta http-equiv="refresh" content="0; URL=https://honey-mum-9ee.notion.site/Tiny-Calculator-957b9b5303454d59a6f3122a0341640e?pvs=4">
+    <style>
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333333; /* Text color */
+        }
+
+        h1 {
+            font-size: 20px;
+            text-align: center;
+            background-color: #f0f0f0; /* Light gray background */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #cccccc; /* Nice border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #201f1f; /* Dark mode background color */
+            color: #ffffff; /* White text */
+        }
+
+        h1.dark-mode {
+            background-color: #333333; /* Dark gray background */
+            border: 1px solid #555555; /* Nice border for dark mode */
+        }
+
+    </style>
+
+    <!-- JavaScript code for dark mode toggle -->
+    <script>
+        // Function to set the dark mode preference in local storage
+        function setDarkModePreference(darkModeEnabled) {
+            localStorage.setItem('darkMode', darkModeEnabled ? '1' : '0');
+        }
+
+        // Function to get the dark mode preference from local storage
+        function getDarkModePreference() {
+            return localStorage.getItem('darkMode') === '1';
+        }
+
+        // Function to update the dark mode class on the body and h1 elements
+        function updateDarkModeClass() {
+            const darkModeEnabled = getDarkModePreference();
+            const h1Element = document.querySelector('h1');
+
+            if (darkModeEnabled) {
+                document.body.classList.add('dark-mode');
+                h1Element.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+                h1Element.classList.remove('dark-mode');
+            }
+        }
+
+        // Call the function on page load to set the initial mode
+        updateDarkModeClass();
+    </script>
+</head>
+<body class="light-mode">
+    <h1>Redirecting to Tiny Calculator...</h1>
+</body>
+</html>
